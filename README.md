@@ -44,3 +44,9 @@ To do list:
 	VERSION #2
 	Add the other 2 regular tessellations (triangle and hexagon)
 
+
+Author’s side note:
+
+	Thank you for showing interest in this project. I am extremely excited to see how this develops.
+	This is the first repository where I am managing issues/tasks/pull requests by other people. Please bear 
+	with me and any noob mistakes I make along the way. 

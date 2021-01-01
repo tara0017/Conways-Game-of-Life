@@ -37,7 +37,8 @@ To do list:
 	VERSION #1
 	create basic GUI for square tiling
 		User selects starting pattern
-		Rules are preset to basic rules B3S23 (a cell is born if it has exactly 3 neighbors, and a cell  survives if it has 2 or 3 neighbors)
+		Rules are preset to basic rules B3S23 (a cell is born if it has exactly 3 neighbors, and a cell  
+		survives if it has 2 or 3 neighbors)
 			* next version user will be able to set their own rules
 	
 	VERSION #2

@@ -5,7 +5,8 @@ Explore multiple variations of Conway's Game of Life
 
 Inspiration:
 
-	This project is inspired by Conway’s Game of Life (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), I’d like to create an interactive visual display and expand it to to include additional 2D and 3D surface.
+	This project is inspired by Conway’s Game of Life (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), 
+	I’d like to create an interactive visual display and expand it to to include additional 2D and 3D surface.
 
 
 Goal:

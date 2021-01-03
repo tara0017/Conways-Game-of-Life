@@ -12,7 +12,38 @@ class block(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect = pygame.Rect((x, y), (width, height))
         
+class BirthControl:
+    
+    def __init__(self, x, y):
+        self.x = x 
+        self.y = y
+        self.up = None 
+        self.down = None
 
+    def button_set(self):
+        self.up = pygame.draw.polygon(screen,GREEN, ((self.x,self.y), ((self.x - 15), self.y + 25), (self.x + 15, self.y + 25)))
+
+        self.down = pygame.draw.polygon(screen,GREEN, ((self.x - 15,self.y + (margin*30)), ((self.x + 15), self.y + (margin * 30)), (self.x, self.y + 25 + (margin * 30))))
+
+class Counter:
+
+    def __init__(self, x, y):
+        self.count = 0
+        self.x = x 
+        self.y = y
+
+    def counter(self, count,up_button, up=False, down=False):
+        if up:
+            count +=1
+        elif down:
+            count -=1
+        counter = font.render(str(count), True, BLACK)
+        counter_rect = counter.get_rect()
+        counter_rect.center = (self.x,(up_button.y + (up_button.height * 2)))
+        screen.blit(counter, counter_rect)
+        return count
+
+    
 ### FUNCTIONS
 # cells are by default "dead". Left mouse click turns the square blue ("alive")
 # if the start game button is clicked, call create grid array function
@@ -156,7 +187,6 @@ def itterate_game_once():
             sprite_on(x,y)
             grid[c[1]][c[0]]   = 1
 
-    
 # main loop for drawing 
 def main():
     global screen, game_active
@@ -169,6 +199,11 @@ def main():
     all_sprites.add(start_game_btn)
     visible_sprites.add(start_game_btn)
     
+    new_y = (start_game_btn.y + start_game_btn.rect.height + 10)
+    new_x = (start_game_btn.x + (start_game_btn.rect.width // 2))
+
+    counter = Counter(new_x, new_y)
+    count = counter.count
     # main loop
     running = True
     while running:
@@ -180,11 +215,21 @@ def main():
         visible_sprites.draw(screen)
         text = font.render("START", True, BLACK)
         screen.blit(text, [border + num_rect * (sq_width + margin), border + sq_width // 2])
-                    
-        
+
+        birth_ctrl = BirthControl(new_x, new_y)
+        birth_ctrl.button_set()
+        counter.counter(up_button=birth_ctrl.up, count=count)
+        # only allow button clicks before
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        if mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.up.y) and mouse[1] <  (birth_ctrl.up.y + birth_ctrl.up.height)) and click[0]:
+            count = counter.counter(up_button=birth_ctrl.up, count=count,up=True)
+        elif mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.down.y) and mouse[1] <  (birth_ctrl.down.y + birth_ctrl.down.height)) and click[0]:
+            count = counter.counter(up_button=birth_ctrl.up, count=count,down=True)
+
         pygame.display.update()
-
-
+        
+        
         if game_active == True:
             itterate_game_once()
         
@@ -214,7 +259,8 @@ def main():
 pygame.init()
 
 ### GLOBAL VARIABLES
-SCREEN_SIZE = 1000
+SCREEN_SIZE_WIDTH = 800
+SCREEN_SIZE_HEIGHT = 600
 grid = []
 game_active = False
 
@@ -246,7 +292,7 @@ font = pygame.font.Font(None, 36)
 
 
 
-screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+screen = pygame.display.set_mode((SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT))
 
 main()
 

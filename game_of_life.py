@@ -20,10 +20,15 @@ class BirthControl:
         self.up = None 
         self.down = None
 
-    def button_set(self):
-        self.up = pygame.draw.polygon(screen,GREEN, ((self.x,self.y), ((self.x - 15), self.y + 25), (self.x + 15, self.y + 25)))
-
-        self.down = pygame.draw.polygon(screen,GREEN, ((self.x - 15,self.y + (margin*30)), ((self.x + 15), self.y + (margin * 30)), (self.x, self.y + 25 + (margin * 30))))
+    def button_set(self, hover_up= False, hover_down=False):
+        if not hover_up:
+            self.up = pygame.draw.polygon(screen,GREEN, ((self.x,self.y), ((self.x - 15), self.y + 25), (self.x + 15, self.y + 25)))
+        else:
+            self.up = pygame.draw.polygon(screen,HOVER_GREEN, ((self.x,self.y), ((self.x - 15), self.y + 25), (self.x + 15, self.y + 25)))
+        if not hover_down:
+            self.down = pygame.draw.polygon(screen,GREEN, ((self.x - 15,self.y + (margin*30)), ((self.x + 15), self.y + (margin * 30)), (self.x, self.y + 25 + (margin * 30))))
+        else:
+            self.down = pygame.draw.polygon(screen,HOVER_GREEN, ((self.x - 15,self.y + (margin*30)), ((self.x + 15), self.y + (margin * 30)), (self.x, self.y + 25 + (margin * 30))))
 
 class Counter:
 
@@ -33,6 +38,7 @@ class Counter:
         self.y = y
 
     def counter(self, count,up_button, up=False, down=False):
+        # Up_button used as refernce point
         if up:
             count +=1
         elif down:
@@ -199,11 +205,11 @@ def main():
     all_sprites.add(start_game_btn)
     visible_sprites.add(start_game_btn)
     
-    new_y = (start_game_btn.y + start_game_btn.rect.height + 10)
+    new_y = (start_game_btn.y + start_game_btn.rect.height + 10) # postioned as to 'start' button
     new_x = (start_game_btn.x + (start_game_btn.rect.width // 2))
 
     counter = Counter(new_x, new_y)
-    count = counter.count
+    count = counter.count # running total start
     # main loop
     running = True
     while running:
@@ -218,14 +224,19 @@ def main():
 
         birth_ctrl = BirthControl(new_x, new_y)
         birth_ctrl.button_set()
-        counter.counter(up_button=birth_ctrl.up, count=count)
-        # only allow button clicks before
+        counter.counter(up_button=birth_ctrl.up, count=count) # acutal display for the running_total
+        
+        # Once game start disable clicks?
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.up.y) and mouse[1] <  (birth_ctrl.up.y + birth_ctrl.up.height)) and click[0]:
-            count = counter.counter(up_button=birth_ctrl.up, count=count,up=True)
-        elif mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.down.y) and mouse[1] <  (birth_ctrl.down.y + birth_ctrl.down.height)) and click[0]:
-            count = counter.counter(up_button=birth_ctrl.up, count=count,down=True)
+        if mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.up.y) and mouse[1] <  (birth_ctrl.up.y + birth_ctrl.up.height)):
+            birth_ctrl.button_set(hover_up=True)
+            if click[0]:
+                count = counter.counter(up_button=birth_ctrl.up, count=count,up=True)
+        elif mouse[0] > birth_ctrl.up.x and ((mouse[1] > birth_ctrl.down.y) and mouse[1] <  (birth_ctrl.down.y + birth_ctrl.down.height)):
+            birth_ctrl.button_set(hover_down=True)
+            if click[0]:
+                count = counter.counter(up_button=birth_ctrl.up, count=count,down=True)
 
         pygame.display.update()
         
@@ -270,6 +281,7 @@ BLACK   = (0,0,0)
 RED     = (255, 0, 0)
 BLUE    = (0, 0, 255)
 GREEN   = (0, 255, 0)
+HOVER_GREEN = (180, 255, 0)
 
 # sprite groups
 visible_sprites = pygame.sprite.Group()

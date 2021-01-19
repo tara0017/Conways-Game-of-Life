@@ -32,21 +32,4 @@ Questions to explore:
 	For the 3D surfaces is it possible to create a “snake” that wraps around to consume itself?
 
 
-To do list:
 
-	VERSION #1
-	create basic GUI for square tiling
-		User selects starting pattern
-		Rules are preset to basic rules B3S23 (a cell is born if it has exactly 3 neighbors, 
-		and a cell survives if it has 2 or 3 neighbors)
-			* next version user will be able to set their own rules
-	
-	VERSION #2
-	Add the other 2 regular tessellations (triangle and hexagon)
-
-
-Author’s side note:
-
-	Thank you for showing interest in this project. I am extremely excited to see how this develops.
-	This is the first repository where I am managing issues/tasks/pull requests by other people. 
-	Please bear with me and any rookie mistakes I make along the way. 

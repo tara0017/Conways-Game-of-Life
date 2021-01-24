@@ -117,7 +117,6 @@ def create_oct_sq_grid(border, grid_size, oct_radius, sq_radius, block_margin):
     apothem   = oct_radius * math.cos(math.pi / 8)
     for row in range(grid_size - 1):
         for col in range(grid_size - 1):
-            ###### DOUBLE CHECK THIS (why oct_radius and not apothem? not block_margin / 2)
             x = border + apothem + block_margin + col * ((block_margin) + oct_radius * 2)
             y = border + apothem + block_margin + row * ((block_margin) + oct_radius * 2)
 
@@ -184,13 +183,12 @@ def itterate_game_once():
     for b in blocks:
         n = get_neighbor_count(b)
 
-        # B2S23
-        # if block is dead
-        if b.color == WHITE and n == 2:
+        # if block is dead (BIRTH RATE)
+        if b.color == WHITE and n >= birth_min and n <= birth_max:
             blocks_to_flip.append(b)
 
-        # if block is alive
-        elif b.color == BLUE and n != 2 and n != 3:
+        # if block is alive (SURVIVAL RATE)
+        elif b.color == BLUE and (n < survive_min or n > survive_max):
             blocks_to_flip.append(b)
 
     for b in blocks_to_flip:
